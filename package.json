@@ -1,0 +1,13 @@
+{
+  "name": "geocoder",
+  "description": "google geocoder test",
+  "author": "Dong Liu <edongliu@gmail.com>",
+  "dependencies": {
+    "geocoder": "*"
+  },
+  "devDependencies": {
+    "should": "*",
+    "mocha": "*"
+  },
+  "engine": "node 0.10"
+}
