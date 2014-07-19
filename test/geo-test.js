@@ -1,21 +1,23 @@
 /*global describe, it, before, beforeEach, after, afterEach */
+
 var assert = require('assert'),
   should = require('should'),
   geo = require('../lib/geo');
 describe('geo', function () {
-  describe('#decoder()', function () {
-    it('should return "ok" when the input is given', function (done) {
-      geo.decoder('some address', function (err, res) {
+  this.timeout(0);
+  describe('#code()', function () {
+    it('should return data when the input is given', function (done) {
+      geo.code('3895 Church Street, Clarkston, GA 30021, USA', function (err, data) {
         if (err) {
           return done(err);
         }
-        res.should.be.exactly('ok');
+        data.results.should.be.an.Array;
         done();
       });
     });
 
     it('should return an Error when the input is not given', function (done) {
-      geo.decoder(null, function (err, res) {
+      geo.code(null, function (err, data) {
         err.should.be.an.Error;
         done();
       });
@@ -25,108 +27,139 @@ describe('geo', function () {
   describe('#isRooftop()', function () {
     it('should return true when the input is rooftop', function () {
       geo.isRooftop({
-        "address_components": [{
-          "long_name": "1600",
-          "short_name": "1600",
-          "types": ["street_number"]
-        }, {
-          "long_name": "Amphitheatre Pkwy",
-          "short_name": "Amphitheatre Pkwy",
-          "types": ["route"]
-        }, {
-          "long_name": "Mountain View",
-          "short_name": "Mountain View",
-          "types": ["locality", "political"]
-        }, {
-          "long_name": "Santa Clara",
-          "short_name": "Santa Clara",
-          "types": ["administrative_area_level_2", "political"]
-        }, {
-          "long_name": "California",
-          "short_name": "CA",
-          "types": ["administrative_area_level_1", "political"]
-        }, {
-          "long_name": "United States",
-          "short_name": "US",
-          "types": ["country", "political"]
-        }, {
-          "long_name": "94043",
-          "short_name": "94043",
-          "types": ["postal_code"]
-        }],
-        "formatted_address": "1600 Amphitheatre Pkwy, Mountain View, CA 94043, USA",
-        "geometry": {
-          "location": {
-            "lat": 37.42291810,
-            "lng": -122.08542120
-          },
-          "location_type": "ROOFTOP",
-          "viewport": {
-            "northeast": {
-              "lat": 37.42426708029149,
-              "lng": -122.0840722197085
+        "results": [{
+          "address_components": [{
+            "long_name": "1600",
+            "short_name": "1600",
+            "types": ["street_number"]
+          }, {
+            "long_name": "Amphitheatre Pkwy",
+            "short_name": "Amphitheatre Pkwy",
+            "types": ["route"]
+          }, {
+            "long_name": "Mountain View",
+            "short_name": "Mountain View",
+            "types": ["locality", "political"]
+          }, {
+            "long_name": "Santa Clara",
+            "short_name": "Santa Clara",
+            "types": ["administrative_area_level_2", "political"]
+          }, {
+            "long_name": "California",
+            "short_name": "CA",
+            "types": ["administrative_area_level_1", "political"]
+          }, {
+            "long_name": "United States",
+            "short_name": "US",
+            "types": ["country", "political"]
+          }, {
+            "long_name": "94043",
+            "short_name": "94043",
+            "types": ["postal_code"]
+          }],
+          "formatted_address": "1600 Amphitheatre Pkwy, Mountain View, CA 94043, USA",
+          "geometry": {
+            "location": {
+              "lat": 37.42291810,
+              "lng": -122.08542120
             },
-            "southwest": {
-              "lat": 37.42156911970850,
-              "lng": -122.0867701802915
+            "location_type": "ROOFTOP",
+            "viewport": {
+              "northeast": {
+                "lat": 37.42426708029149,
+                "lng": -122.0840722197085
+              },
+              "southwest": {
+                "lat": 37.42156911970850,
+                "lng": -122.0867701802915
+              }
             }
-          }
-        },
-        "types": ["street_address"]
-      }).should.be.ok;
+          },
+          "types": ["street_address"]
+        }],
+        "status": "OK"
+      }).should.be.true;
     });
 
     it('should return false when the input is not rooftop', function () {
       geo.isRooftop({
-        "address_components": [{
-          "long_name": "1600",
-          "short_name": "1600",
-          "types": ["street_number"]
-        }, {
-          "long_name": "Amphitheatre Pkwy",
-          "short_name": "Amphitheatre Pkwy",
-          "types": ["route"]
-        }, {
-          "long_name": "Mountain View",
-          "short_name": "Mountain View",
-          "types": ["locality", "political"]
-        }, {
-          "long_name": "Santa Clara",
-          "short_name": "Santa Clara",
-          "types": ["administrative_area_level_2", "political"]
-        }, {
-          "long_name": "California",
-          "short_name": "CA",
-          "types": ["administrative_area_level_1", "political"]
-        }, {
-          "long_name": "United States",
-          "short_name": "US",
-          "types": ["country", "political"]
-        }, {
-          "long_name": "94043",
-          "short_name": "94043",
-          "types": ["postal_code"]
-        }],
-        "formatted_address": "1600 Amphitheatre Pkwy, Mountain View, CA 94043, USA",
-        "geometry": {
-          "location": {
-            "lat": 37.42291810,
-            "lng": -122.08542120
-          },
-          "location_type": "RANGE_INTERPOLATED",
-          "viewport": {
-            "northeast": {
-              "lat": 37.42426708029149,
-              "lng": -122.0840722197085
+        "status": "OK",
+        "results": [{
+          "types": ["sublocality", "political"],
+          "formatted_address": "Winnetka, California, USA",
+          "address_components": [{
+            "long_name": "Winnetka",
+            "short_name": "Winnetka",
+            "types": ["sublocality", "political"]
+          }, {
+            "long_name": "Los Angeles",
+            "short_name": "Los Angeles",
+            "types": ["administrative_area_level_3", "political"]
+          }, {
+            "long_name": "Los Angeles",
+            "short_name": "Los Angeles",
+            "types": ["administrative_area_level_2", "political"]
+          }, {
+            "long_name": "California",
+            "short_name": "CA",
+            "types": ["administrative_area_level_1", "political"]
+          }, {
+            "long_name": "United States",
+            "short_name": "US",
+            "types": ["country", "political"]
+          }],
+          "geometry": {
+            "location": {
+              "lat": 34.2131710,
+              "lng": -118.5710220
             },
-            "southwest": {
-              "lat": 37.42156911970850,
-              "lng": -122.0867701802915
+            "location_type": "APPROXIMATE",
+            "viewport": {
+              "southwest": {
+                "lat": 34.1947148,
+                "lng": -118.6030368
+              },
+              "northeast": {
+                "lat": 34.2316232,
+                "lng": -118.5390072
+              }
+            },
+            "bounds": {
+              "southwest": {
+                "lat": 34.1791050,
+                "lng": -118.5883200
+              },
+              "northeast": {
+                "lat": 34.2353090,
+                "lng": -118.5534191
+              }
             }
           }
-        },
-        "types": ["street_address"]
-      }).should.not.be.ok;
+        }]
+      }).should.be.false;
     });
   });
+
+  describe('#rooftopCode()', function () {
+    it('should return a rooftop geocode', function (done) {
+      geo.rooftopCode('3895 Church Street, Clarkston, GA 30021, USA', function (err, data) {
+        (err === null).should.be.true;
+        data.location.should.not.be.String;
+        console.log(data);
+        done();
+      });
+    });
+  });
+
+  describe('#rooftopCode()', function () {
+    it('should return a non-rooftop geocode', function (done) {
+      geo.rooftopCode('7665 Honey Abbey, Koggiung, MA', function (err, data) {
+        (err === null).should.be.true;
+        data.location.should.be.exactly('no rooftop code');
+        console.log(data);
+        done();
+      });
+    });
+  });
+
 });
