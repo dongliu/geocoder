@@ -3,26 +3,9 @@
 var assert = require('assert'),
   should = require('should'),
   geo = require('../lib/geo');
+
 describe('geo', function () {
   this.timeout(0);
-  describe('#code()', function () {
-    it('should return data when the input is given', function (done) {
-      geo.code('3895 Church Street, Clarkston, GA 30021, USA', function (err, data) {
-        if (err) {
-          return done(err);
-        }
-        data.results.should.be.an.Array;
-        done();
-      });
-    });
-
-    it('should return an Error when the input is not given', function (done) {
-      geo.code(null, function (err, data) {
-        err.should.be.an.Error;
-        done();
-      });
-    });
-  });
 
   describe('#isRooftop()', function () {
     it('should return true when the input is rooftop', function () {
@@ -149,9 +132,7 @@ describe('geo', function () {
         done();
       });
     });
-  });
 
-  describe('#rooftopCode()', function () {
     it('should return a non-rooftop geocode', function (done) {
       geo.rooftopCode('7665 Honey Abbey, Koggiung, MA', function (err, data) {
         (err === null).should.be.true;
