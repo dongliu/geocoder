@@ -3,7 +3,8 @@
   "description": "google geocoder test",
   "author": "Dong Liu <edongliu@gmail.com>",
   "dependencies": {
-    "geocoder": "*"
+    "geocoder": "0.2.0",
+    "csv": "0.4.0"
   },
   "devDependencies": {
     "should": "*",
