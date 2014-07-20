@@ -1,5 +1,5 @@
 /**
- * @fileOverview read a csv file with addresses and output a csv file with corresponding rooftop geocodes if found.
+ * @fileOverview read a csv file with addresses and output address, formatted address, rooftop geocode to a file. Rate limiter is used to avoid API quota issues.
  * @author Dong Liu
  */
 
@@ -8,7 +8,7 @@ var csv = require('csv'),
   path = require('path'),
   geo = require('./lib/geo'),
   RateLimiter = require('limiter').RateLimiter,
-  limiter = new RateLimiter(1, 'second'),
+  limiter = new RateLimiter(1, 'second'), // one request per second is safe
   inputPath,
   realPath,
   targetPath,
@@ -44,10 +44,14 @@ fs.createReadStream(realPath)
       } else {
         limiter.removeTokens(1, function () {
           geo.rooftopCode(record[0], function (err, data) {
-            if (data !== null) {
-              record.push(data.formatted_address, '(' + data.location.lat + ',' + data.location.lng + ')');
+            if (err) {
+              record.push(err.message, '');
             } else {
-              record.push('', '');
+              if (data !== null) {
+                record.push(data.formatted_address, '(' + data.location.lat + ',' + data.location.lng + ')');
+              } else {
+                record.push('NON_ROOFTOP', '');
+              }
             }
             cb(null, record);
           });
