@@ -41,6 +41,7 @@ fs.createReadStream(realPath)
         cb(null, record);
       } else {
         geo.rooftopCode(record[0], function (err, data) {
+          console.log(data);
           if (data !== null) {
             record.push(data.formatted_address, '(' + data.location.lat + ',' + data.location.lng + ')');
           } else {
@@ -50,6 +51,6 @@ fs.createReadStream(realPath)
         });
       }
     });
-  }))
+  }), {parallel: 1})
   .pipe(csv.stringify())
   .pipe(fs.createWriteStream(targetPath));

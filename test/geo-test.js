@@ -133,6 +133,16 @@ describe('geo', function () {
       });
     });
 
+    it('should return a rooftop geocode', function (done) {
+      geo.rooftopCode('75 East Indiantown Road, Concourse Village Shopping Center, Jupiter, FL', function (err, data) {
+        (err === null).should.be.true;
+        data.location.should.not.be.String;
+        console.log(data);
+        done();
+      });
+    });
+
+
     it('should return a non-rooftop geocode', function (done) {
       geo.rooftopCode('7665 Honey Abbey, Koggiung, MA', function (err, data) {
         (err === null).should.be.true;
