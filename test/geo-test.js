@@ -128,7 +128,6 @@ describe('geo', function () {
       geo.rooftopCode('3895 Church Street, Clarkston, GA 30021, USA', function (err, data) {
         (err === null).should.be.true;
         data.location.should.not.be.String;
-        console.log(data);
         done();
       });
     });
@@ -137,7 +136,6 @@ describe('geo', function () {
       geo.rooftopCode('7665 Honey Abbey, Koggiung, MA', function (err, data) {
         (err === null).should.be.true;
         (data === null).should.be.true;
-        console.log(data);
         done();
       });
     });
