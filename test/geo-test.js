@@ -136,7 +136,7 @@ describe('geo', function () {
     it('should return a non-rooftop geocode', function (done) {
       geo.rooftopCode('7665 Honey Abbey, Koggiung, MA', function (err, data) {
         (err === null).should.be.true;
-        data.location.should.be.exactly('no rooftop code');
+        (data === null).should.be.true;
         console.log(data);
         done();
       });
