@@ -7,6 +7,8 @@ var csv = require('csv'),
   fs = require('fs'),
   path = require('path'),
   geo = require('./lib/geo'),
+  RateLimiter = require('limiter').RateLimiter,
+  limiter = new RateLimiter(1, 'second'),
   inputPath,
   realPath,
   targetPath,
@@ -40,13 +42,15 @@ fs.createReadStream(realPath)
         record.push('formatted', 'geocode');
         cb(null, record);
       } else {
-        geo.rooftopCode(record[0], function (err, data) {
-          if (data !== null) {
-            record.push(data.formatted_address, '(' + data.location.lat + ',' + data.location.lng + ')');
-          } else {
-            record.push('', '');
-          }
-          cb(null, record);
+        limiter.removeTokens(1, function () {
+          geo.rooftopCode(record[0], function (err, data) {
+            if (data !== null) {
+              record.push(data.formatted_address, '(' + data.location.lat + ',' + data.location.lng + ')');
+            } else {
+              record.push('', '');
+            }
+            cb(null, record);
+          });
         });
       }
     });
