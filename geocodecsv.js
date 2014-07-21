@@ -105,6 +105,7 @@ realPath = path.resolve(__dirname, inputPath);
 
 if (!fs.existsSync(realPath)) {
   console.warn(realPath + ' does not exist');
+  console.warn('Plese input a valid csv file path.');
   process.exit(1);
 }
 
