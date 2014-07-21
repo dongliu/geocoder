@@ -119,7 +119,7 @@ var parser = csv.parse();
 
 parser.on('readable', function () {
   var record;
-  while (record = parser.read()) {
+  while (!!(record = parser.read())) {
     addresses.push([record[0], 'NOT_CHECKED', '', '']);
   }
 });
